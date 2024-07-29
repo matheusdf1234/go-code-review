@@ -39,21 +39,15 @@ func New[T Service](cfg Config, svc T) API {
 		MUX: r,
 		CFG: cfg,
 		svc: svc,
-	}.withServer()
+	}.withServer().withRoutes()
 }
 
 func (a API) withServer() API {
-
-	ch := make(chan API)
-	go func() {
-		a.srv = &http.Server{
-			Addr:    fmt.Sprintf(":%d", a.CFG.Port),
-			Handler: a.MUX,
-		}
-		ch <- a
-	}()
-
-	return <-ch
+	a.srv = &http.Server{
+		Addr:    fmt.Sprintf(":%d", a.CFG.Port),
+		Handler: a.MUX,
+	}
+	return a
 }
 
 func (a API) withRoutes() API {
