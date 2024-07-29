@@ -16,6 +16,8 @@ var (
 
 func main() {
 	svc := service.New(repo)
+	cfg.API.Host = "localhost"
+	cfg.API.Port = 8080
 	本 := api.New(cfg.API, svc)
 	本.Start()
 	fmt.Println("Starting Coupon service server")
