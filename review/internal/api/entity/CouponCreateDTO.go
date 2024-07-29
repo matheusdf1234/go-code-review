@@ -1,6 +1,6 @@
 package entity
 
-type Coupon struct {
+type CouponCreateDTO struct {
 	Discount       int    `json:"discount"`
 	Code           string `json:"code"`
 	MinBasketValue int    `json:"minbasketvalue"`
