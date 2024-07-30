@@ -63,12 +63,16 @@ func (s Service) GetCoupons(codes []string) ([]Coupon, error) {
 		coupon, err := s.repo.FindByCode(code)
 		if err != nil {
 			if e == nil {
-				e = fmt.Errorf("code: %s, index: %d", code, idx)
+				e = fmt.Errorf("\n The coupon with code: %s and index: %d could not be found ", code, idx)
 			} else {
-				e = fmt.Errorf("%w; code: %s, index: %d", e, code, idx)
+				e = fmt.Errorf("\n %w; The coupon with code: %s and index: %d could not be found ", e, code, idx)
 			}
+
+		} else {
+
+			coupons = append(coupons, *coupon)
 		}
-		coupons = append(coupons, *coupon)
+
 	}
 
 	return coupons, e

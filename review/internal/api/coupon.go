@@ -2,6 +2,7 @@ package api
 
 import (
 	. "coupon_service/internal/api/entity"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -41,15 +42,19 @@ func (a *API) Create(c *gin.Context) {
 }
 
 func (a *API) Get(c *gin.Context) {
-	//TODO: if we look for a non existant coupon, things are exploding, I need to send back the proper request when that happens
 	apiReq := CouponGetDTO{}
 	if err := c.ShouldBindJSON(&apiReq); err != nil {
 		return
 	}
 	coupons, err := a.svc.GetCoupons(apiReq.Codes)
 	if err != nil {
-		return
+		//if we have are errors and the coupons are empty, return. Otherwise we give back whatever coupons we were able to fetch
+		fmt.Println(err.Error())
+		if coupons == nil {
+			return
+		}
 	}
+
 	apiResponse := make([]CouponCreateResponseDTO, 0, len(coupons))
 
 	//as a future improvement this "translation" of the  entity object to the DTO can be handled by a separate class
