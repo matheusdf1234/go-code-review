@@ -12,7 +12,7 @@ import (
 )
 
 type Service interface {
-	ApplyCoupon(entity.Basket, string) (*entity.Basket, error)
+	ApplyCoupon(int, string) (*entity.Basket, error)
 	CreateCoupon(int, string, int) (*entity.Coupon, error)
 	GetCoupons([]string) ([]entity.Coupon, error)
 }

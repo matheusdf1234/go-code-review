@@ -1,6 +1,7 @@
 package service
 
 import (
+	"coupon_service/internal/service/entity"
 	. "coupon_service/internal/service/entity"
 	"fmt"
 
@@ -22,8 +23,9 @@ func New(repo Repository) Service {
 	}
 }
 
-func (s Service) ApplyCoupon(basket Basket, code string) (b *Basket, e error) {
-	b = &basket
+func (s Service) ApplyCoupon(basketValue int, code string) (b *Basket, e error) {
+	b = new(entity.Basket)
+	b.Value = basketValue
 	coupon, err := s.repo.FindByCode(code)
 	if err != nil {
 		return nil, err
@@ -32,6 +34,7 @@ func (s Service) ApplyCoupon(basket Basket, code string) (b *Basket, e error) {
 	if b.Value > 0 {
 		b.AppliedDiscount = coupon.Discount
 		b.ApplicationSuccessful = true
+		return b, nil
 	}
 	if b.Value == 0 {
 		return
